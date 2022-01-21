@@ -23,3 +23,9 @@ MIN_SIZE = 20
 PAD_SIZE = 30
 SPLIT_FACTOR = 0.5
 BATCH_SIZE = 32
+
+
+class FontsDict:
+    dictionary = dict()
+    for i in range(len(FONTS)):
+        dictionary[FONTS[i]] = i
