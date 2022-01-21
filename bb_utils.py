@@ -1,6 +1,6 @@
 import h5py
 from constants import *
-from hf_utils import *
+from db_utils import *
 
 
 def get_all_bb(db_title, attr_bb):

@@ -1,16 +1,17 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import os
+import test_model
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+cwd = os.getcwd()
+PATH_TO_TEST = os.path.join(cwd, 'test_raw.h5')
+SAVE_PATH = os.path.join(cwd, 'test_processed.h5')
+RESULTS_PATH = os.path.join(cwd, 'results.csv')
+MODEL_PATH = os.path.join(cwd, 'model.h5')
 
 
-# Press the green button in the gutter to run the script.
+def main():
+    test_model.get_results(PATH_TO_TEST, SAVE_PATH, RESULTS_PATH, MODEL_PATH)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()

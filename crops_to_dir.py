@@ -1,5 +1,5 @@
 from crop_utils import *
-import hf_utils
+import db_utils
 from db_attributes import *
 
 
@@ -16,7 +16,7 @@ def write_all_crop(title_attrs, crop_attrs):
         crop = crop_func(title_attrs.get_img(), title_attrs.get_all_pts_bb[i], crop_attrs.get_is_drop())
         if crop is None:
             continue
-        label = hf_utils.get_label(title_attrs.get_fonts()[i])
+        label = db_utils.get_label(title_attrs.get_fonts()[i])
         item_index = i
         img_attrs = ImgAttrs(crop, title, label, item_index, crop_attrs.get_save_path())
         write_crop(img_attrs)

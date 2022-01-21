@@ -1,3 +1,10 @@
+# https://www.analyticsvidhya.com/blog/2020/08/top-4-pre-trained-models-for-image-classification-with-python-code/
+# https://keras.io/api/applications/#inceptionv3
+# https://drive.google.com/drive/folders/1BAyo1Xam3cNJkozY4lqEG6_xvQsZgRIR?usp=sharing
+# https://drive.google.com/drive/folders/1SyV3uBugPyqWcvAZvTtnD_6Yg_wmQQOZ?usp=sharing
+# https://drive.google.com/drive/folders/1xR_hxMNEFaajMEOWyzNM5JU00Yzw6ooz?usp=sharing
+# https://drive.google.com/drive/folders/1N-QTCin7fy0Z5fGpH-62DsRqya5qfsTN?usp=sharing
+# https://drive.google.com/drive/folders/1ZqGQXI5oIf9ryCvhOX325KKYvJI_qZcN?usp=sharing
 import tensorflow as tf
 from tf.keras.applications.inception_v3 import InceptionV3
 from tf.keras.models import Model
@@ -26,7 +33,7 @@ def get_inception_template(training, validation):
 
 def get_freezed_learning_schedule():
     return ExponentialDecay(
-            initial_learning_rate=0.01,
+            initial_learning_rate=0.001,
             decay_steps=1000,
             decay_rate=0.97,
             staircase=True)
@@ -42,7 +49,7 @@ def get_unfreezed_optimizer():
 
 def get_unfreezed_learning_schedule():
     return ExponentialDecay(
-            initial_learning_rate=0.0001,
+            initial_learning_rate=0.00001,
             decay_steps=10000,
             decay_rate=0.97,
             staircase=True)
@@ -98,8 +105,6 @@ class InceptionModel:
             self.template.training, epochs=10, validation_data=self.template.validation, callbacks=[self.checkpoint])
 
     def unfreeze(self):
-        for i, layer in enumerate(base_model.layers):
-            print(i, layer.name)
         for layer in self.model.layers[:249]:
             layer.trainable = False
         for layer in self.model.layers[249:]:

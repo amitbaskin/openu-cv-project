@@ -1,8 +1,12 @@
 import csv
 import numpy as np
 import h5py
+import tensorflow as tf
+from tf.keras.models import load_model
 from test_generator import get_test_batches
 from myconstants import *
+from db_attributes import *
+import crop_utils
 
 
 def predict(model, X):
@@ -24,7 +28,7 @@ def evaluate_batch(pred, Y):
         return 0
 
 
-def evaluate(model, test_db_path):
+def evaluate_helper(model, test_db_path):
     amount_of_samples = 0
     hits = 0
     batches = get_test_batches(test_db_path)
@@ -36,7 +40,13 @@ def evaluate(model, test_db_path):
     return hits / amount_of_samples
 
 
-def export_results(model, db_path, results_path):
+def evaluate(test_db_path, save_path, path_to_model):
+    process_test_db(path_to_test, save_path)
+    model = load_model(path_to_model)
+    print(evaluate_helper(model, test_db_path))
+
+
+def get_results_helper(model, db_path, results_path):
     examples_amount = 0
     with open(results_path, 'w') as results:
         writer = csv.writer(results)
@@ -62,3 +72,9 @@ def export_results(model, db_path, results_path):
                         label_lst[prediction] = 1
                         row = [title, word[i]] + label_lst
                         writer.writerow(row)
+
+
+def get_results(path_to_test, save_path, results_path, path_to_model):
+    process_test_db(path_to_test, save_path)
+    model = load_model(path_to_model)
+    export_results(model, save_path, results_path)

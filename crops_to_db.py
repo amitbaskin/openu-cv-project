@@ -1,6 +1,6 @@
 from myconstants import *
 from crop_utils import *
-from hf_utils import *
+from db_utils import *
 
 
 def put_word_in_hf(word_attrs):
@@ -33,14 +33,20 @@ def put_all_img_words_in_hf(title_attrs, crop_attrs):
     return char_offset
 
 
-def put_all_imgs_words_in_hf(dataset_path, titles, crop_attrs, is_labeled):
-    hf = init_hf(crop_attrs.get_save_path())
-    dataset = get_dataset(dataset_path)
+def put_all_imgs_words_in_hf(db_path, titles, crop_attrs, is_labeled):
+    hf = init_db(crop_attrs.get_save_path())
+    db = get_db(db_path)
     counter = 0
     print('\n\n\nstarting - put_all_imgs_words_in_hf\n\n\n')
     for i in range(len(titles)):
-        title_attrs = TitleAttrs(hf, dataset, titles[i], is_labeled)
+        title_attrs = TitleAttrs(hf, db, titles[i], is_labeled)
         counter += put_all_img_words_in_hf(title_attrs, crop_attrs)
         print(counter)
     hf.close()
     print('\n\n\nfinished - put_all_imgs_words_in_hf\n\n\n')
+
+
+def process_test_db(path_to_test, save_path):
+    crop_attrs = CropAttrs(CHAR_BB_KEY, save_path, crop_utils.get_rect_crop, is_drop=False)
+    titles = get_titles_from_db_path(path_to_test)
+    put_all_imgs_words_in_hf(path_to_test, titles, crop_attrs, is_labeled=False)

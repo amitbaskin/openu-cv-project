@@ -1,6 +1,3 @@
-from configurations import *
-
-
 CLASSES_AMOUNT = 7
 IMG_SIZE = (224, 224)
 IMG_SHAPE = IMG_SIZE + (3,)
@@ -21,7 +18,8 @@ WEIGHTS = 'imagenet'
 ACTIVATION = 'relu'
 MIN_SIZE = 20
 PAD_SIZE = 30
-SPLIT_FACTOR = 0.5
+TWO_SPLIT_FACTOR = 0.5
+THREE_SPLIT_FACTOR = 0.1
 BATCH_SIZE = 32
 
 
@@ -29,3 +27,7 @@ class FontsDict:
     dictionary = dict()
     for i in range(len(FONTS)):
         dictionary[FONTS[i]] = i
+
+    @staticmethod
+    def get_dict():
+        return dictionary
