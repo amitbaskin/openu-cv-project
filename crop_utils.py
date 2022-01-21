@@ -62,7 +62,7 @@ def get_rect_crop(img, pts_bb, is_drop):
     return crop
 
 
-def get_polygon_crop(img, pts_bb, is_drop=False):
+def get_polygon_crop(img, pts_bb, is_drop):
     pts_bb = validate_pts(pts_bb, img, is_drop)
     if pts_bb is None:
         return None
