@@ -1,3 +1,47 @@
+class RenderFont(object):
+    """
+    Outputs a rasterized font sample.
+        Output is a binary mask matrix cropped closesly with the font.
+        Also, outputs ground-truth bounding boxes and text string
+    """
+
+    def __init__(self, data_dir='data'):
+        # distribution over the type of text:
+        # whether to get a single word, paragraph or a line:
+        self.p_text = {1.0 : 'WORD',
+                       0.0 : 'LINE',
+                       0.0 : 'PARA'}
+
+        ## TEXT PLACEMENT PARAMETERS:
+        self.f_shrink = 0.90
+        # self.f_shrink = 1.0
+        self.max_shrink_trials = 5 # 0.9^5 ~= 0.6
+        # self.max_shrink_trials = 1 # 0.9^5 ~= 0.6
+        # the minimum number of characters that should fit in a mask
+        # to define the maximum font height.
+        self.min_nchar = 2
+        # self.min_nchar = 1
+        self.min_font_h = 16 #px : 0.6*12 ~ 7px <= actual minimum height
+        self.max_font_h = 120 #px
+        # self.min_font_h = 40 #px : 0.6*12 ~ 7px <= actual minimum height
+        # self.max_font_h = 50 #px
+        self.p_flat = 0.10
+        # self.p_flat = 1.0
+
+        # curved baseline:
+        self.p_curved = 1.0
+        self.baselinestate = BaselineState()
+
+        # text-source : gets english text:
+        self.text_source = TextSource(min_nchar=self.min_nchar,
+                                      fn=osp.join(data_dir,'newsgroup/newsgroup.txt'))
+
+        # get font-state object:
+        self.font_state = FontState(data_dir)
+
+        pygame.init()
+
+
 def render_curved(self, font, word_text):
     """
     use curved baseline for rendering word

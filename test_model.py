@@ -46,11 +46,21 @@ def evaluate(test_db_path, save_path, path_to_model):
     print(evaluate_helper(model, test_db_path))
 
 
+hila_fonts = 'Raleway, Open Sans, Roboto, Ubuntu Mono, Michroma,, Alex Brush, Russo One'
+hila_dict = dict()
+for ind in range(7):
+    hila_dict[hila_fonts[ind]] = ind
+
+
+def map_from_myfonts_to_hila(myindex):
+    return hilda_dict[FONTS[myindex]]
+
+
 def get_results_helper(model, db_path, results_path):
     examples_amount = 0
     with open(results_path, 'w') as results:
         writer = csv.writer(results)
-        header = ['image', 'char', *FONTS]
+        header = ['image', 'char', *hila_fonts]
         writer.writerow(header)
         with h5py.File(db_path, 'r') as hf:
             titles = hf[DATA_KEY]
@@ -69,12 +79,13 @@ def get_results_helper(model, db_path, results_path):
                     print(examples_amount)
                     for i in range(chars_amount):
                         label_lst = CLASSES_AMOUNT * [0]
+                        prediction = map_from_myfonts_to_hila(prediction)
                         label_lst[prediction] = 1
                         row = [title, word[i]] + label_lst
                         writer.writerow(row)
 
 
-def get_results(path_to_test, save_path, results_path, path_to_model):
+def get_results(path_to_test, save_path, results_path, model_path):
     process_test_db(path_to_test, save_path)
-    model = load_model(path_to_model)
-    export_results(model, save_path, results_path)
+    model = load_model(model_path)
+    get_results_helper(model, save_path, results_path)
